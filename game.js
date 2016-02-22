@@ -9,11 +9,14 @@
             block2.y = block2.y + 3;
         } else if (tecla == 38 && block2.y > container.y) {
             block2.y = block2.y - 3;
-        }else if(tecla == 87 && block.y + block.height < container.height){//W
+        } else if (tecla == 87 && block.y + block.height < container.height) {//W
             block.y = block.y + 3;
-        }else if(tecla == 83 && block.y > container.y) {//S
+        } else if (tecla == 83 && block.y > container.y) {//S
             block.y = block.y - 3;
         }
+    }
+    function move(e){
+        
     }
     function init() {
         var canvas = document.getElementsByTagName('canvas')[0];
@@ -37,13 +40,14 @@
                 if ((circles[i].y + circles[i].vy + circles[i].r > container.y + container.height) || (circles[i].y - circles[i].r + circles[i].vy < container.y)) {
                     circles[i].vy = -circles[i].vy;
                 }
-                circles[i].x += circles[i].vx;
-                circles[i].y += circles[i].vy;
+                //circles[i].x += circles[i].vx;
+                //circles[i].y += circles[i].vy;
             }
             requestAnimationFrame(drav);
         }
         requestAnimationFrame(drav);
     }
+    window.addEventListener('mousemove', move, false);
     window.addEventListener('load', init, false);
     window.addEventListener('keydown', preeskeyboard, true);
 }());
