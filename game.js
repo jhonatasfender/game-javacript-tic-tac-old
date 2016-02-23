@@ -15,9 +15,6 @@
             block.y = block.y - 3;
         }
     }
-    function move(e){
-        
-    }
     function init() {
         var canvas = document.getElementsByTagName('canvas')[0];
         var c = canvas.getContext('2d'), caixa = canvas.getContext("2d");
@@ -47,7 +44,6 @@
         }
         requestAnimationFrame(drav);
     }
-    window.addEventListener('mousemove', move, false);
     window.addEventListener('load', init, false);
     window.addEventListener('keydown', preeskeyboard, true);
 }());
