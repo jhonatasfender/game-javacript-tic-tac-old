@@ -1,49 +1,76 @@
-(function () {
-    var container = {x: 0, y: 0, width: 290, height: 150};
-    var circles = [{x: 10, y: 10, r: 10, color: 25, vx: 1, vy: 1}];
-    var block = {x: 10, y: 40, width: 10, height: 50};
-    var block2 = {x: 280, y: 40, width: 10, height: 50};
-    function preeskeyboard() {
-        var tecla = window.event.keyCode;
-        if (tecla == 40 && block2.y + block2.height < container.height) {
-            block2.y = block2.y + 3;
-        } else if (tecla == 38 && block2.y > container.y) {
-            block2.y = block2.y - 3;
-        } else if (tecla == 87 && block.y + block.height < container.height) {//W
-            block.y = block.y + 3;
-        } else if (tecla == 83 && block.y > container.y) {//S
-            block.y = block.y - 3;
+var painted, content, winningCombinations, turn = 0, theCanvas, c, cxt, squaresFilled = 0, w, y;
+window.onload = function () {
+    drawBoard();
+    painted = new Array();
+    content = new Array();
+    winningCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    for (var i = 0; i <= 8; i++) {
+        painted[i] = false;
+        content[i] = '';
+    }
+}
+function drawBoard() {
+    body = document.getElementsByTagName("body")[0];
+    for (var i = 0; i < 9; i++) {
+        var x = document.createElement("canvas");
+        x.height = 50;
+        x.width = 50;
+        console.log(x.style);
+        //x.style.borderLeftStyle = "1px solid black";
+        x.id = "canvas" + i;
+        var ourCanvasClickMaker = function (index) {
+            return function () {
+                console.log("calling canvasClicked with " + index);
+                canvasClicked(index);
+            };
+        };
+        x.onclick=ourCanvasClickMaker(i);
+        body.appendChild(x);
+        if (i == 2 || i == 5) {
+            var br = document.createElement("br");
+            body.appendChild(br);
         }
     }
-    function init() {
-        var canvas = document.getElementsByTagName('canvas')[0];
-        var c = canvas.getContext('2d'), caixa = canvas.getContext("2d");
-        var container = {x: 0, y: 0, width: 290, height: 150};
-        var circles = [{x: 10, y: 10, r: 10, color: 25, vx: 1, vy: 1}];
-        function drav() {
-            c.fillStyle = 'black';
-            c.fillRect(container.x, container.y, container.width + 10, container.height + 10);
-            caixa.fillStyle = 'white';
-            caixa.fillRect(block.x, block.y, block.width, block.height);
-            caixa.fillRect(block2.x, block2.y, block2.width, block2.height);
-            for (var i = 0; i < circles.length; i++) {
-                c.fillStyle = 'hsl(' + circles[i].color + ',100%,50%)';
-                c.beginPath();
-                c.arc(circles[i].x, circles[i].y, circles[i].r, 0, 2 * Math.PI, false);
-                c.fill();
-                if ((circles[i].x + circles[i].vx + circles[i].r > container.x + container.width) || (circles[i].x - circles[i].r + circles[i].vx < container.x)) {
-                    circles[i].vx = -circles[i].vx;
-                }
-                if ((circles[i].y + circles[i].vy + circles[i].r > container.y + container.height) || (circles[i].y - circles[i].r + circles[i].vy < container.y)) {
-                    circles[i].vy = -circles[i].vy;
-                }
-                //circles[i].x += circles[i].vx;
-                //circles[i].y += circles[i].vy;
-            }
-            requestAnimationFrame(drav);
+}
+function canvasClicked(canvasNumber) {
+    theCanvas = "canvas" + canvasNumber;
+    c = document.getElementById(theCanvas);
+    cxt = c.getContext("2d");
+    //draw x if box is empty
+    if (painted[canvasNumber] == false) {
+        if (turn % 2 == 0) {
+            cxt.beginPath();
+            cxt.moveTo(15, 15);
+            cxt.lineTo(30, 30);
+            cxt.moveTo(30, 15);
+            cxt.lineTo(15, 30);
+            cxt.stroke();
+            cxt.closePath();
+            content[canvasNumber] = 'x';
+        } else {
+            cxt.beginPath();
+            cxt.arc(25, 25, 8, 0, Math.PI * 2, true);
+            cxt.stroke();
+            cxt.closePath();
+            content[canvasNumber] = '0';
         }
-        requestAnimationFrame(drav);
+        turn++;
+        painted[canvasNumber] = true;
+        squaresFilled++;
+        checkForWinners(content[canvasNumber]);
+        if (squaresFilled == 9) {
+            alert("Game Over");
+            location.reload(true);
+        }
+    } else {
+        alert("That spot's taken!");
     }
-    window.addEventListener('load', init, false);
-    window.addEventListener('keydown', preeskeyboard, true);
-}());
+}
+function checkForWinners(symbol) {
+    for (var a = 0; a < winningCombinations.length; a++) {
+        if (content[winningCombinations[a][0]] == symbol && content[winningCombinations[a][1]] == symbol && content[winningCombinations[a][2]] == symbol) {
+            alert(symbol + " won!");
+            location.reload(true);
+        }
+    }
+}
