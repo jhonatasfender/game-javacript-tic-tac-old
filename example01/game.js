@@ -15,8 +15,7 @@ function drawBoard() {
         var x = document.createElement("canvas");
         x.height = 50;
         x.width = 50;
-        console.log(x.style);
-        //x.style.borderLeftStyle = "1px solid black";
+        x.style.border = "2px solid black";
         x.id = "canvas" + i;
         var ourCanvasClickMaker = function (index) {
             return function () {
@@ -24,7 +23,7 @@ function drawBoard() {
                 canvasClicked(index);
             };
         };
-        x.onclick=ourCanvasClickMaker(i);
+        x.onclick = ourCanvasClickMaker(i);
         body.appendChild(x);
         if (i == 2 || i == 5) {
             var br = document.createElement("br");
@@ -46,7 +45,7 @@ function canvasClicked(canvasNumber) {
             cxt.lineTo(15, 30);
             cxt.stroke();
             cxt.closePath();
-            content[canvasNumber] = 'x';
+            content[canvasNumber] = 'X';
         } else {
             cxt.beginPath();
             cxt.arc(25, 25, 8, 0, Math.PI * 2, true);

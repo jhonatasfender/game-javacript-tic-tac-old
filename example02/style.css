@@ -1,0 +1,27 @@
+body{
+    text-align:center;
+}
+
+.box{
+    text-align:left;
+    width:auto;
+    height:auto;
+}
+
+h3{
+    position:relative;
+}
+
+h1{
+    position:relative; 
+}
+
+h2{
+    position:relative; 
+}
+
+canvas{
+    position:relative;
+    margin-right: 0px;
+    margin-bottom: -4px;
+}
